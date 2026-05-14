@@ -99,11 +99,5 @@ should call out which test would have failed pre-fix.
 - **Format:** `<type>(<scope>): <subject>` per
   [conventional commits](https://www.conventionalcommits.org/). Subject
   under ~70 chars; body explains the *why*.
-- **Author:** `fnrhombus`, email
-  `2511516+fnrhombus@users.noreply.github.com` (the GitHub noreply form
-  — never the underlying gmail).
-- **No `Co-Authored-By: Claude` trailer.** No AI attribution anywhere
-  visible — commit messages, PR bodies, issue replies. See
-  `~/.claude/CLAUDE.md` for the longer version of this rule.
 - **No `--no-verify`** to bypass pre-commit hooks. If a hook fails,
   investigate and fix the underlying issue.
