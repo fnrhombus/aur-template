@@ -1,4 +1,4 @@
-# Maintainer: <YOUR NAME> <YOUR EMAIL>
+# Maintainer: Thomas Butler <goliyth@gmail.com>
 #
 # PKGBUILD template. Replace every <PLACEHOLDER> before pushing the first
 # release. release.yml's publish-aur job uses sed to bump `pkgver` and
@@ -15,7 +15,7 @@ pkgver=0.0.0
 pkgrel=1
 pkgdesc="<ONE-LINE DESCRIPTION>"
 arch=('x86_64' 'aarch64')
-url="https://github.com/<OWNER>/<REPO>"
+url="https://github.com/fnrhombus/<REPO>"
 license=('MIT')
 provides=('<PKGNAME>')
 conflicts=('<PKGNAME>')
