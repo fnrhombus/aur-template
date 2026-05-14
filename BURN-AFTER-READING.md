@@ -96,7 +96,6 @@ Plus customize:
   `"package-name"`. The `"simple"` default works for any project but
   language-specific types know about idiomatic version-file locations.
 - **`LICENSE`** — replace the `<YEAR> <YOUR NAME>` line.
-- **`.github/FUNDING.yml`** — replace with your accounts, or delete.
 - **`CLAUDE.md`** — adjust the project name and any project-specific
   conventions.
 - **`README.md`** — write what the project actually is.
