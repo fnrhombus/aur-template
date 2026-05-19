@@ -33,7 +33,20 @@ GitHub secrets only; the workflows reference them as `${{ secrets.NAME }}`.
 
 ## 3. GitHub repo settings
 
-Settings → General:
+Repo-level settings don't transfer when you `gh repo create --template`,
+so configure all four panes below. Walk them in order.
+
+Settings → General → Pull Requests:
+
+- ☐ **Allow merge commits** — OFF (keeps `main` history linear)
+- ✅ **Allow squash merging** — ON
+- ☐ **Allow rebase merging** — OFF
+- **Default commit message for squash:** "Pull request title and description"
+  — so the squash subject = PR title (conventional-commit-shaped) and
+  the body = PR body. release-please reads the subject; if intermediate
+  WIP commit messages bleed through, the CHANGELOG goes weird.
+
+Settings → General → Merging:
 
 - ✅ **Allow auto-merge** — required for `auto-merge.yml` to enable
   auto-merge on the release PR.
@@ -53,6 +66,7 @@ Settings → Branches → Add branch protection rule for `main`:
 - ✅ **Require status checks to pass before merging** → add `test` to
   the required checks list (this is the check name produced by
   `.github/workflows/test.yml`).
+- ✅ **Require linear history** — matches squash-only above; defense in depth.
 - ✅ **Do not allow bypassing the above settings** (optional but
   recommended — keeps you honest).
 
