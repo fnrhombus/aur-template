@@ -1,32 +1,10 @@
 # Working on this project
 
-## Branch and worktree workflow — HARD RULE
+## Branch policy — HARD RULE
 
-**No direct commits to `main`.** All changes land via PR from a feature
-branch + worktree. `main` is (or should be) protected; even the maintainer
-goes through the PR flow.
+**No direct commits to `main`.** All changes land via PR from a feature branch — `main` is protected, even the maintainer goes through the PR flow.
 
-For every change, create a worktree:
-
-```sh
-git worktree add ../<repo>+<feature-name> -b <feature-name>
-cd ../<repo>+<feature-name>
-# … work, commit, push the branch …
-gh pr create --fill
-```
-
-When the PR merges, **clean up immediately** in the same shell session:
-
-```sh
-cd <main-worktree>
-git pull --ff-only
-git worktree remove ../<repo>+<feature-name>
-git branch -d <feature-name>
-git push origin :<feature-name>   # only if you pushed the branch
-```
-
-Dangling feature branches or stray worktrees are smells — start a new
-worktree when you need one, don't accumulate them "just in case".
+Worktree mechanics, branch/PR cleanup, and templated paths are governed by `~/.claude/CLAUDE.git.md`. Don't restate them here.
 
 ## Release flow
 
