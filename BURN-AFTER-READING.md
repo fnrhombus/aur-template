@@ -23,10 +23,10 @@ Settings → Secrets and variables → Actions → New repository secret. Add
 
 | Secret name | Value |
 |---|---|
-| `AUTOMERGE_PAT` | Reuse the classic PAT (Bitwarden), or generate fresh at <https://github.com/settings/tokens> with `repo` + `workflow` scopes. PAT (not `GITHUB_TOKEN`) is required because GitHub suppresses workflow triggers for `GITHUB_TOKEN`-actored events, breaking the auto-merge → release-please chain. |
+| `AUTOMERGE_PAT` | Classic PAT stored as a custom field on the github.com login record in Bitwarden — reuse across projects. Generate fresh at <https://github.com/settings/tokens> with `repo` + `workflow` scopes if needed. PAT (not `GITHUB_TOKEN`) is required because GitHub suppresses workflow triggers for `GITHUB_TOKEN`-actored events, breaking the auto-merge → release-please chain. |
 | `AUR_USERNAME` | `rhombus` |
 | `AUR_EMAIL` | `goliyth@gmail.com` |
-| `AUR_SSH_PRIVATE_KEY` | The AUR-push ED25519 private key from Bitwarden. Paste the entire file contents including the `-----BEGIN OPENSSH PRIVATE KEY-----` header and trailing newline. |
+| `AUR_SSH_PRIVATE_KEY` | The AUR-push ED25519 private key — Bitwarden record (search "AUR"). Paste the entire file contents including the `-----BEGIN OPENSSH PRIVATE KEY-----` header and trailing newline. |
 
 **Never paste these values into any file in this repo.** They live in
 GitHub secrets only; the workflows reference them as `${{ secrets.NAME }}`.
