@@ -80,9 +80,59 @@ Plus customize:
   conventions.
 - **`README.md`** — write what the project actually is.
 
-## 5. First release
+## 5. Hook setup
 
-Once 1–4 are done:
+The template auto-registers `.githooks/` via `mise.toml`'s `[hooks] enter`,
+but you have to author the actual hook script for your language and
+(if you're using mise) trust the config.
+
+### Trust mise config (mise users only)
+
+The first time you `cd` into the repo:
+
+```sh
+mise trust                       # accept the mise.toml in this repo
+eval "$(mise activate bash)"     # or zsh, fish — if mise isn't already activated globally
+```
+
+After that, `[hooks] enter` fires on every `cd` and idempotently runs
+`git config core.hooksPath .githooks`. Subagent worktrees inherit the
+config once mise is trusted.
+
+### Non-mise users — one-time setup
+
+Run once after cloning:
+
+```sh
+git config core.hooksPath .githooks
+```
+
+### Author a pre-commit hook
+
+Create `.githooks/pre-commit` (executable: `chmod +x .githooks/pre-commit`)
+running your language's formatter + linter. **Fail loudly when tooling
+isn't on PATH** — silent no-ops let unformatted code through, and CI
+becomes your only safety net afterwards. Pattern:
+
+```sh
+#!/bin/sh
+set -e
+
+if ! command -v <your-formatter> >/dev/null 2>&1; then
+    echo "pre-commit: <your-formatter> not on PATH — cannot verify." >&2
+    echo "  Activate mise or install the tool, then re-commit." >&2
+    exit 1
+fi
+
+# ... run formatter/linter, exit non-zero on findings ...
+```
+
+`--no-verify` to bypass the hook is forbidden by `CLAUDE.md` — fix the
+underlying issue instead.
+
+## 6. First release
+
+Once 1–5 are done:
 
 1. Make a `feat:` commit on a branch and open a PR.
 2. Auto-merge enables; once `test` is green it merges.
@@ -94,7 +144,7 @@ Once 1–4 are done:
 If anything in this chain fails, fix the failing workflow and re-run via
 the Actions tab → workflow_dispatch on `release-please.yml` if needed.
 
-## 6. Delete this file
+## 7. Delete this file
 
 Once the first release ships clean, open a PR that deletes
 `BURN-AFTER-READING.md`. Future cloners shouldn't have to ask whether

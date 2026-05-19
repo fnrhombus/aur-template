@@ -81,3 +81,19 @@ should call out which test would have failed pre-fix.
   under ~70 chars; body explains the *why*.
 - **No `--no-verify`** to bypass pre-commit hooks. If a hook fails,
   investigate and fix the underlying issue.
+
+## Before committing — verify hook tooling
+
+`.githooks/pre-commit` (see BURN-AFTER-READING.md for setup) must be able
+to find its tooling on PATH. Subagent worktrees routinely lack mise's
+activation and will fail loudly if your hook depends on mise-managed
+tools. Before any `git commit`, verify the formatter/linter your hook
+runs is actually reachable:
+
+```sh
+command -v <your-formatter> >/dev/null && echo "ok: $(which <your-formatter>)" \
+  || echo "MISSING — run: eval \"$(mise activate bash)\" (or zsh)"
+```
+
+Don't `--no-verify` to bypass — if the hook can't run, that's a setup
+problem to fix, not a check to skip.
