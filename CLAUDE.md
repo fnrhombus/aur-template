@@ -53,8 +53,10 @@ a few commits then release" intermediate state — `main` is always shipped.
 | `feat:` | minor (0.X.0) | yes |
 | `fix:` | patch (0.0.X) | yes |
 | `feat!:` or `BREAKING CHANGE:` in body | major (X.0.0) | yes |
-| `docs:`, `refactor:`, `perf:`, `revert:` | none | yes |
-| `chore:`, `ci:`, `build:`, `test:` | none | hidden |
+| `perf:`, `revert:` | patch (0.0.X) | yes |
+| `docs:`, `refactor:`, `chore:`, `ci:`, `build:`, `test:` | none | hidden |
+
+> Note: release-please's default versioning strategy couples CHANGELOG visibility with bump-eligibility — *any* non-`hidden` commit type that's not `feat:`/breaking triggers a patch bump (see [`src/versioning-strategies/default.ts`](https://github.com/googleapis/release-please/blob/main/src/versioning-strategies/default.ts)). That's why `docs:` and `refactor:` are kept `"hidden": true` in `release-please-config.json` — making them visible would mean every docs-only PR cuts a release.
 
 ## Test-driven changes — HARD RULE
 
