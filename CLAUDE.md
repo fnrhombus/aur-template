@@ -1,32 +1,10 @@
 # Working on this project
 
-## Branch and worktree workflow — HARD RULE
+## Branch policy — HARD RULE
 
-**No direct commits to `main`.** All changes land via PR from a feature
-branch + worktree. `main` is (or should be) protected; even the maintainer
-goes through the PR flow.
+**No direct commits to `main`.** All changes land via PR from a feature branch — `main` is protected, even the maintainer goes through the PR flow.
 
-For every change, create a worktree:
-
-```sh
-git worktree add ../<repo>+<feature-name> -b <feature-name>
-cd ../<repo>+<feature-name>
-# … work, commit, push the branch …
-gh pr create --fill
-```
-
-When the PR merges, **clean up immediately** in the same shell session:
-
-```sh
-cd <main-worktree>
-git pull --ff-only
-git worktree remove ../<repo>+<feature-name>
-git branch -d <feature-name>
-git push origin :<feature-name>   # only if you pushed the branch
-```
-
-Dangling feature branches or stray worktrees are smells — start a new
-worktree when you need one, don't accumulate them "just in case".
+Worktree mechanics, branch/PR cleanup, and templated paths are governed by `~/.claude/CLAUDE.git.md`. Don't restate them here.
 
 ## Release flow
 
@@ -53,8 +31,10 @@ a few commits then release" intermediate state — `main` is always shipped.
 | `feat:` | minor (0.X.0) | yes |
 | `fix:` | patch (0.0.X) | yes |
 | `feat!:` or `BREAKING CHANGE:` in body | major (X.0.0) | yes |
-| `docs:`, `refactor:`, `perf:`, `revert:` | none | yes |
-| `chore:`, `ci:`, `build:`, `test:` | none | hidden |
+| `perf:`, `revert:` | patch (0.0.X) | yes |
+| `docs:`, `refactor:`, `chore:`, `ci:`, `build:`, `test:` | none | hidden |
+
+> Note: release-please's default versioning strategy couples CHANGELOG visibility with bump-eligibility — *any* non-`hidden` commit type that's not `feat:`/breaking triggers a patch bump (see [`src/versioning-strategies/default.ts`](https://github.com/googleapis/release-please/blob/main/src/versioning-strategies/default.ts)). That's why `docs:` and `refactor:` are kept `"hidden": true` in `release-please-config.json` — making them visible would mean every docs-only PR cuts a release.
 
 ## Test-driven changes — HARD RULE
 
@@ -101,3 +81,19 @@ should call out which test would have failed pre-fix.
   under ~70 chars; body explains the *why*.
 - **No `--no-verify`** to bypass pre-commit hooks. If a hook fails,
   investigate and fix the underlying issue.
+
+## Before committing — verify hook tooling
+
+`.githooks/pre-commit` (see BURN-AFTER-READING.md for setup) must be able
+to find its tooling on PATH. Subagent worktrees routinely lack mise's
+activation and will fail loudly if your hook depends on mise-managed
+tools. Before any `git commit`, verify the formatter/linter your hook
+runs is actually reachable:
+
+```sh
+command -v <your-formatter> >/dev/null && echo "ok: $(which <your-formatter>)" \
+  || echo "MISSING — run: eval \"$(mise activate bash)\" (or zsh)"
+```
+
+Don't `--no-verify` to bypass — if the hook can't run, that's a setup
+problem to fix, not a check to skip.

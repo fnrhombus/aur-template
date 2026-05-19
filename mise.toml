@@ -1,0 +1,21 @@
+# Mise config — pin language toolchain versions + define shared tasks here.
+# https://mise.jdx.dev/configuration.html
+#
+# Auto-install the pre-commit hook on directory entry. Idempotent (git
+# overwrites the same value on each fire); skipped silently if mise isn't
+# active. Non-mise users: run `git config core.hooksPath .githooks` once,
+# documented in BURN-AFTER-READING.md.
+[hooks]
+enter = "git config core.hooksPath .githooks"
+
+# Pin your language tools here, e.g.:
+#   go = "1.24"
+#   node = "20"
+#   rust = "1.83"
+[tools]
+
+# Common tasks. Optional — wire up your own as your language needs.
+# [tasks.build]
+# run = "..."
+# [tasks.test]
+# run = "..."
