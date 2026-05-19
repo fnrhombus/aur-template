@@ -97,3 +97,16 @@ command -v <your-formatter> >/dev/null && echo "ok: $(which <your-formatter>)" \
 
 Don't `--no-verify` to bypass — if the hook can't run, that's a setup
 problem to fix, not a check to skip.
+
+## Failure patterns
+
+Two recurring Claude mistakes worth heading off:
+
+1. **Don't fabricate user instructions.** When citing *"the user said X"* or
+   *"the handoff said Y"*, scan the source for the exact phrasing. If you
+   wrote the text yourself (subagent prompt, plan doc, internal reasoning),
+   attribute it to yourself — *"I assumed X based on Y"* — not Tom.
+2. **Don't hedge on prescribed cleanup.** When instructions say *"do X when
+   Y"* and Y holds, do X. Don't surface it as a "needs your eye" item or park
+   it as a follow-up. *WHEN IN DOUBT — DISCUSS* is for genuine scope/intent
+   uncertainty, not for sanity-checking already-prescribed work.
